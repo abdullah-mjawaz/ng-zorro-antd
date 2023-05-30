@@ -12,6 +12,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -22,24 +23,23 @@ import {
   SimpleChanges,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation,
-  forwardRef
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject, Subscription, fromEvent, merge } from 'rxjs';
-import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
+import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
+import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/operators';
 
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import {
-  InputBoolean,
-  InputNumber,
-  MouseTouchObserverConfig,
   arraysEqual,
   ensureNumberInRange,
   getElementOffset,
   getPercent,
   getPrecision,
+  InputBoolean,
+  InputNumber,
   isNil,
+  MouseTouchObserverConfig,
   silentEvent
 } from 'ng-zorro-antd/core/util';
 
@@ -167,7 +167,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private dragStart_?: Subscription | null;
   private dragMove_?: Subscription | null;
   private dragEnd_?: Subscription | null;
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject();
   private isNzDisableFirstChange = true;
 
   constructor(
@@ -211,7 +211,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
   ngOnDestroy(): void {
     this.unsubscribeDrag();
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 
@@ -401,8 +401,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     if (!this.platform.isBrowser) {
       return;
     }
-    const pluckFunc: (keys: string[]) => (event: Event) => number = keys => (event: Event) =>
-      keys.reduce((acc: NzSafeAny, key: string) => acc[key] || acc, event);
+
     const sliderDOM = this.slider.nativeElement;
     const orientField = this.nzVertical ? 'pageY' : 'pageX';
     const mouse: MouseTouchObserverConfig = {
@@ -425,14 +424,14 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       source.startPlucked$ = fromEvent(sliderDOM, start).pipe(
         filter(filterFunc),
         tap(silentEvent),
-        map(pluckFunc(pluckKey)),
+        pluck<Event, number>(...pluckKey),
         map((position: number) => this.findClosestValue(position))
       );
       source.end$ = fromEvent(document, end);
       source.moveResolved$ = fromEvent(document, move).pipe(
         filter(filterFunc),
         tap(silentEvent),
-        map(pluckFunc(pluckKey)),
+        pluck<Event, number>(...pluckKey),
         distinctUntilChanged(),
         map((position: number) => this.findClosestValue(position)),
         distinctUntilChanged(),

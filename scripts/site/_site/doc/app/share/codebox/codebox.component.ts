@@ -1,15 +1,6 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -33,7 +24,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   iframe?: SafeUrl;
   language = 'zh';
   theme = 'default';
-  destroy$ = new Subject<boolean>();
+  destroy$ = new Subject();
   codeLoaded = false;
   onlineIDELoading = false;
   copyLoading = false;
@@ -174,7 +165,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 }

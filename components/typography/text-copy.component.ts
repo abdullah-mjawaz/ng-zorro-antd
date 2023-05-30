@@ -55,7 +55,7 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
   copedTooltip: NzTSType | null = null;
   copyIcon: NzTSType = 'copy';
   copedIcon: NzTSType = 'check';
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject();
 
   @Input() text!: string;
   @Input() tooltips?: [NzTSType, NzTSType] | null;
@@ -90,7 +90,7 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     clearTimeout(this.copyId);
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 

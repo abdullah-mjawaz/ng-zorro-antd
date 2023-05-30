@@ -19,12 +19,12 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, fromEvent, merge } from 'rxjs';
+import { fromEvent, merge, Observable } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
 import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
 
-import { RenderListContext, TransferDirection, TransferItem, TransferStat } from './interface';
+import { TransferDirection, TransferItem } from './interface';
 
 @Component({
   selector: 'nz-transfer-list',
@@ -140,9 +140,9 @@ export class NzTransferListComponent implements AfterViewInit {
   @Input() notFoundContent?: string;
   @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;
 
-  @Input() renderList: TemplateRef<RenderListContext> | null = null;
-  @Input() render: TemplateRef<{ $implicit: TransferItem }> | null = null;
-  @Input() footer: TemplateRef<{ $implicit: TransferDirection }> | null = null;
+  @Input() renderList: TemplateRef<void> | null = null;
+  @Input() render: TemplateRef<void> | null = null;
+  @Input() footer: TemplateRef<void> | null = null;
 
   // events
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -153,7 +153,7 @@ export class NzTransferListComponent implements AfterViewInit {
 
   @ViewChildren('checkboxes', { read: ElementRef }) checkboxes!: QueryList<ElementRef<HTMLLabelElement>>;
 
-  stat: TransferStat = {
+  stat = {
     checkAll: false,
     checkHalf: false,
     checkCount: 0,

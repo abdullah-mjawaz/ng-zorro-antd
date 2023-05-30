@@ -169,7 +169,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   timeOptions: SupportTimeOptions | SupportTimeOptions[] | null = null;
   hoverValue: SingleValue[] = []; // Range ONLY
   checkedPartArr: boolean[] = [false, false];
-  destroy$ = new Subject<boolean>();
+  destroy$ = new Subject();
 
   get hasTimePicker(): boolean {
     return !!this.showTime;
@@ -223,7 +223,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 
@@ -304,7 +304,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       const newValue = this.overrideHms(value, this.datePickerService.value as CandyDate);
       this.datePickerService.setValue(newValue); // If not select a date currently, use today
     }
-    this.datePickerService.inputPartChange$.next(null);
+    this.datePickerService.inputPartChange$.next();
     this.buildTimeOptions();
   }
 
@@ -362,7 +362,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       this.datePickerService.inputPartChange$.next(nextPart);
     } else {
       this.datePickerService.setValue(value);
-      this.datePickerService.inputPartChange$.next(null);
+      this.datePickerService.inputPartChange$.next();
 
       if (emitValue && this.isAllowed(value)) {
         this.datePickerService.emitValue$.next();

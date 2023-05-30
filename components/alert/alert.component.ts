@@ -116,7 +116,7 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   dir: Direction = 'ltr';
   private isTypeSet = false;
   private isShowIconSet = false;
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject();
 
   constructor(
     public nzConfigService: NzConfigService,
@@ -185,7 +185,7 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
     }
   }
   ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 }

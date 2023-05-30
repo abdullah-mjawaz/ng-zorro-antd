@@ -42,7 +42,7 @@ export interface EmbeddedProperty {
 })
 export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   private classMap: { [key: string]: boolean } = {};
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject();
   hostFlexStyle: string | null = null;
   dir: Direction = 'ltr';
   @Input() nzFlex: string | number | null = null;
@@ -165,7 +165,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 }

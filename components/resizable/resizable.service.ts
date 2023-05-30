@@ -28,7 +28,7 @@ export class NzResizableService implements OnDestroy {
    * ```
    */
   handleMouseDownOutsideAngular$ = new Subject<NzResizeHandleMouseDownEvent>();
-  documentMouseUpOutsideAngular$ = new Subject<MouseEvent | TouchEvent | null>();
+  documentMouseUpOutsideAngular$ = new Subject<MouseEvent | TouchEvent>();
   documentMouseMoveOutsideAngular$ = new Subject<MouseEvent | TouchEvent>();
   mouseEnteredOutsideAngular$ = new Subject<boolean>();
 

@@ -181,7 +181,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
 
   private viewInit = false;
   private rfaId: number = -1;
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject();
   private windowResizeSubscription = Subscription.EMPTY;
   get copyText(): string {
     return (typeof this.nzCopyText === 'string' ? this.nzCopyText : this.nzContent)!;
@@ -365,7 +365,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
     this.expandableBtnElementCache = null;
     this.windowResizeSubscription.unsubscribe();

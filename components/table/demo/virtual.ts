@@ -68,7 +68,7 @@ export interface VirtualDataInterface {
 })
 export class NzDemoTableVirtualComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('virtualTable', { static: false }) nzTableComponent?: NzTableComponent<VirtualDataInterface>;
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject();
   listOfData: VirtualDataInterface[] = [];
 
   scrollToIndex(index: number): void {
@@ -101,7 +101,7 @@ export class NzDemoTableVirtualComponent implements OnInit, AfterViewInit, OnDes
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 }

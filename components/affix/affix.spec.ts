@@ -84,11 +84,9 @@ describe('affix', () => {
       discardPeriodicTasks();
     }));
 
-    it('wraps content with affix', fakeAsync(() => {
+    it('wraps content with affix', () => {
       expect(componentObject.content() === null).toBe(false);
-      setupInitialState();
-      discardPeriodicTasks();
-    }));
+    });
 
     describe('when scrolled within top offset', () => {
       it('scrolls with the content', fakeAsync(() => {
@@ -140,7 +138,7 @@ describe('affix', () => {
       }
     });
 
-    it('should be re-adjust width when trigger resize', fakeAsync(() => {
+    it('shoule be re-adjust width when trigger resize', fakeAsync(() => {
       setupInitialState();
       emitScroll(window, defaultOffsetTop + startOffset - 1);
       componentObject.emitEvent(window, new Event('resize'));
@@ -537,7 +535,6 @@ describe('affix RTL', () => {
     tick(30);
     fixture.detectChanges();
     expect(el.querySelector('.ant-affix')?.classList).toContain('ant-affix-rtl');
-    fixture.destroy();
   }));
 });
 @Component({
